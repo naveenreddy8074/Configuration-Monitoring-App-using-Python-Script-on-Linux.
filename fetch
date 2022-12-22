@@ -1,0 +1,265 @@
+import os
+import psutil
+import platform
+from datetime import datetime
+import GPUtil
+from terminaltables import AsciiTable
+
+
+def laptopData():
+    def get_size(bytes, suffix="B"):
+        """
+        Scale bytes to its proper format
+        e.g:
+            1253656 => '1.20MB'
+            1253656678 => '1.17GB'
+        """
+        factor = 1024
+        for unit in ["", "K", "M", "G", "T", "P"]:
+            if bytes < factor:
+                return f"{bytes:.2f}{unit}{suffix}"
+            bytes /= factor
+
+    try:
+        systemInfo = {}
+        uname = platform.uname()
+        systemInfo["System"] = uname.system
+        systemInfo["Node Name"] = uname.node
+        systemInfo["Release"] = uname.release
+        systemInfo["Version"] = uname.version
+        systemInfo["Machine"] = uname.machine
+        systemInfo["Processor"] = uname.processor
+
+        bootInfo={}
+        boot_time_timestamp = psutil.boot_time()
+        bt = datetime.fromtimestamp(boot_time_timestamp)
+        bootInfo["Boot Time"] = f"{bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}"
+
+        cpuInfo = {}
+
+        cpuInfo["Physical cores"] = f"{psutil.cpu_count(logical=False)}"
+        cpuInfo["Total cores"] = f"{psutil.cpu_count(logical=True)}"
+
+        cpufreq = psutil.cpu_freq()
+        cpuInfo["Max Frequency"] = f"{cpufreq.max:.2f}Mhz"
+        cpuInfo["Min Frequency"] = f"{cpufreq.min:.2f}Mhz"
+        cpuInfo["Current Frequency"] = f"{cpufreq.current:.2f}Mhz"
+
+        for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
+            cpuInfo[f"Core {i}"] = f"{percentage}%"
+
+        cpuInfo["Total CPU Usage"] = f"{psutil.cpu_percent()}%"
+
+
+        # get the memory details
+        svmem = psutil.virtual_memory()
+
+        memInfo = {}
+
+        memInfo["Total memory"] = f"{get_size(svmem.total)}"
+        memInfo["Available"] = f"{get_size(svmem.available)}"
+        memInfo["Used"] = f"{get_size(svmem.used)}"
+        memInfo["Percentage"] = f"{svmem.percent}%"
+
+        # get the swap memory details (if exists)
+        swap = psutil.swap_memory()
+        memInfo["Swap total memory"] = f"{get_size(swap.total)}"
+        memInfo["Swap free memory"] = f"{get_size(swap.free)}"
+        memInfo["Swap used memory"] = f"{get_size(swap.used)}"
+        memInfo["Swap memory percentage"] = f"{swap.percent}%"
+
+
+        diskInfo = {}
+
+        partitions = psutil.disk_partitions()
+        for i,partition in enumerate(partitions):
+            diskInfo[f"Partition{i+1}"] = f"{partition.device}"
+            diskInfo[f"Mountpoint{i+1}"] = f"{partition.mountpoint}"
+            diskInfo[f"File system type{i+1}"] = f"{partition.fstype}"
+            try:
+                partition_usage = psutil.disk_usage(partition.mountpoint)
+            except PermissionError:
+                # this can be catched due to the disk that
+                # isn't ready
+                continue
+            diskInfo[f"Total Size {i+1}"] = f"{get_size(partition_usage.total)}"
+            diskInfo[f"Used {i+1}"] = f"{get_size(partition_usage.used)}"
+            diskInfo[f"Free {i+1}"] = f"{get_size(partition_usage.free)}"
+            diskInfo[f"Percentage {i+1}"] = f"{partition_usage.percent}%"
+
+        # get IO statistics since boot
+        disk_io = psutil.disk_io_counters()
+
+        diskInfo["Total read since boot"] = f"{get_size(disk_io.read_bytes)}"
+        diskInfo["Total write since boot"] = f"{get_size(disk_io.write_bytes)}"
+
+        networkInfo = {}
+        # get all network interfaces (virtual and physical)
+        if_addrs = psutil.net_if_addrs()
+        for interface_name, interface_addresses in if_addrs.items():
+
+            for address in interface_addresses:
+
+                if str(address.family) == 'AddressFamily.AF_INET':
+                    networkInfo[f"{interface_name} IP Address"] = f"{address.address}"
+                    networkInfo[f"{interface_name} Netmask"] = f"{address.netmask}"
+                    networkInfo[f"{interface_name} Broadcast IP"] = f"{address.broadcast}"
+
+                elif str(address.family) == 'AddressFamily.AF_PACKET':
+                    networkInfo[f"{interface_name} MAC Address"] = f"{address.address}"
+                    networkInfo[f"{interface_name} Netmask"] = f"{address.netmask}"
+                    networkInfo[f"{interface_name} Broadcast MAC"] = f"{address.broadcast}"
+
+        # get IO statistics since boot
+        net_io = psutil.net_io_counters()
+
+        networkInfo["Total bytes uploaded since boot"] = f"{get_size(net_io.bytes_sent)}"
+        networkInfo["Total bytes downloaded since boot"] = f"{get_size(net_io.bytes_recv)}"
+
+
+        laptopInfo = {}
+        laptopInfo["System Info"] = systemInfo
+        laptopInfo["Cpu Info"] = cpuInfo
+        laptopInfo["Memory Info"] = memInfo
+        laptopInfo["Boot Info"] = bootInfo
+        laptopInfo["Disk Info"] = diskInfo
+        laptopInfo["Network Info"] = networkInfo
+
+        return laptopInfo
+
+    except:
+        pass
+
+data=laptopData()
+
+DesiredSystemTableData = []
+
+DesiredSystemTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES'],
+                    ['System', data["System Info"]['System']],
+                    ['Node Name', data["System Info"]['Node Name']],
+                    ['Release', data["System Info"]['Release']],
+                    ['Version', data["System Info"]['Version']],
+                    ['Machine', data["System Info"]['Machine']],
+                    ['Processor', data["System Info"]['Processor']]
+                ]
+
+DesiredCPUTableData = []
+
+DesiredCPUTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES'],
+                    ['Physical cores', data["Cpu Info"]['Physical cores']],
+                    ['Total cores', data["Cpu Info"]['Total cores']],
+                    ['Max Frequency', data["Cpu Info"]['Max Frequency']],
+                    ['Min Frequency', data["Cpu Info"]['Min Frequency']],
+                    ['Current Frequency', data["Cpu Info"]['Current Frequency']],
+                    ['Total CPU Usage', data["Cpu Info"]['Total CPU Usage']]
+                ]
+
+DesiredMemoryTableData = []
+
+DesiredMemoryTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES'],
+                    ['Total memory', data["Memory Info"]['Total memory']],
+                    ['Available', data["Memory Info"]['Available']],
+                    ['Used', data["Memory Info"]['Used']],
+                    ['Percentage', data["Memory Info"]['Percentage']],
+                    ['Swap total memory', data["Memory Info"]['Swap total memory']],
+                    ['Swap free memory', data["Memory Info"]['Swap free memory']],
+                    ['Swap used memory', data["Memory Info"]['Swap used memory']],
+                    ['Swap memory percentage', data["Memory Info"]['Swap memory percentage']]
+                ]
+
+DesiredDiskTableData = []
+DesiredDiskTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES']
+                ]
+
+for key,value in data["Disk Info"].items():
+    DesiredDiskTableData.append([key,value])
+
+
+DesiredBootTableData = []
+
+DesiredBootTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES'],
+                    ['Boot Time', data["Boot Info"]['Boot Time']]
+                ]
+
+DesiredNetworkTableData = []
+DesiredNetworkTableData = [
+                    ['SYSTEM PARAMETER', 'VALUES']
+                ]
+
+for key,value in data["Network Info"].items():
+    DesiredNetworkTableData.append([key,value])
+
+displayTable1 = AsciiTable(DesiredSystemTableData)
+displayTable2 = AsciiTable(DesiredCPUTableData)
+displayTable3 = AsciiTable(DesiredMemoryTableData)
+displayTable4 = AsciiTable(DesiredDiskTableData)
+displayTable5 = AsciiTable(DesiredBootTableData)
+displayTable6 = AsciiTable(DesiredNetworkTableData)
+
+
+def output():
+
+    print ("VALID INPUT:  ALL, BASIC, CPU, MEMORY, DISK, BOOT, NETWORK")
+    userInput = input("Please enter your valid input ==>> ")
+
+    if userInput == "ALL":
+
+        print("\n================SYSTEM ALL BASIC INFORMATION==================")
+        print ("\n",displayTable1.table)
+
+        print("\n================CPU INFORMATION==================")
+        print ("\n",displayTable2.table)
+
+
+        print("\n================MEMORY INFORMATION==================")
+        print ("\n",displayTable3.table)
+
+        print("\n================DISK INFORMATION==================")
+        print ("\n",displayTable4.table)
+
+        print("\n================BOOT TIME INFORMATION==================")
+        print ("\n",displayTable5.table)
+
+        print("\n================NETWORK INFORMATION==================")
+        print ("\n",displayTable6.table)
+
+
+    elif userInput == "BASIC":
+
+        print("\n================SYSTEM ALL BASIC INFORMATION==================")
+        print ("\n",displayTable1.table)
+    
+    elif userInput == "CPU":
+
+        print("\n================CPU INFORMATION==================")
+        print ("\n",displayTable2.table)
+
+    elif userInput == "MEMORY":
+
+        print("\n================MEMORY INFORMATION==================")
+        print ("\n",displayTable3.table)
+
+    elif userInput == "DISK":
+
+        print("\n================DISK INFORMATION==================")
+        print ("\n",displayTable4.table)
+
+    elif userInput == "BOOT":
+
+        print("\n================BOOT TIME INFORMATION==================")
+        print ("\n",displayTable5.table)
+
+    elif userInput == "NETWORK":
+
+        print("\n================NETWORK INFORMATION==================")
+        print ("\n",displayTable6.table)
+
+    else:
+        print("PLEASE ENTER A VALID INPUT: RERUN AGAIN!")
+        }
+
