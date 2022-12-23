@@ -1,0 +1,153 @@
+ SYSTEM PARAMETER , VALUES                                      
+ System           , Linux                                       
+ Node Name        , ubuntu20                                    
+ Release          , 5.4.0-33-generic                            
+ Version          , #37-Ubuntu SMP Thu May 21 12:53:59 UTC 2020 
+ Machine          , x86_64                                      
+ Processor        , x86_64                                      
+ SYSTEM PARAMETER  , VALUES     
+ Physical cores    ,1
+ Total cores       ,1
+ Max Frequency     , 0.00Mhz    
+ Min Frequency     , 0.00Mhz    
+ Current Frequency , 2496.00Mhz 
+ Total CPU Usage   ,5.00%
+ SYSTEM PARAMETER       , VALUES   
+ Total memory           , 3.84GB   
+ Available              , 2.32GB   
+ Used                   , 1.27GB   
+ Percentage             ,39.60%
+ Swap total memory      , 923.26MB 
+ Swap free memory       , 923.26MB 
+ Swap used memory       , 0.00B    
+ Swap memory percentage ,0.00%
+ SYSTEM PARAMETER       , VALUES                       
+ Partition1             , /dev/sda5                    
+ Mountpoint1            , /                            
+ File system type1      , ext4                         
+ Total Size 1           , 19.07GB                      
+ Used 1                 , 10.89GB                      
+ Free 1                 , 7.19GB                       
+ Percentage 1           ,60.20%
+ Partition2             , /dev/loop0                   
+ Mountpoint2            , /snap/bare/5                 
+ File system type2      , squashfs                     
+ Total Size 2           , 128.00KB                     
+ Used 2                 , 128.00KB                     
+ Free 2                 , 0.00B                        
+ Percentage 2           ,100.00%
+ Partition3             , /dev/loop1                   
+ Mountpoint3            , /snap/core18/2344            
+ File system type3      , squashfs                     
+ Total Size 3           , 55.62MB                      
+ Used 3                 , 55.62MB                      
+ Free 3                 , 0.00B                        
+ Percentage 3           ,100.00%
+ Partition4             , /dev/loop2                   
+ Mountpoint4            , /snap/core18/2667            
+ File system type4      , squashfs                     
+ Total Size 4           , 55.62MB                      
+ Used 4                 , 55.62MB                      
+ Free 4                 , 0.00B                        
+ Percentage 4           ,100.00%
+ Partition5             , /dev/loop3                   
+ Mountpoint5            , /snap/core20/1376            
+ File system type5      , squashfs                     
+ Total Size 5           , 62.00MB                      
+ Used 5                 , 62.00MB                      
+ Free 5                 , 0.00B                        
+ Percentage 5           ,100.00%
+ Partition6             , /dev/loop4                   
+ Mountpoint6            , /snap/core20/1738            
+ File system type6      , squashfs                     
+ Total Size 6           , 63.25MB                      
+ Used 6                 , 63.25MB                      
+ Free 6                 , 0.00B                        
+ Percentage 6           ,100.00%
+ Partition7             , /dev/loop5                   
+ Mountpoint7            , /snap/gnome-3-34-1804/77     
+ File system type7      , squashfs                     
+ Total Size 7           , 219.00MB                     
+ Used 7                 , 219.00MB                     
+ Free 7                 , 0.00B                        
+ Percentage 7           ,100.00%
+ Partition8             , /dev/loop6                   
+ Mountpoint8            , /snap/gtk-common-themes/1535 
+ File system type8      , squashfs                     
+ Total Size 8           , 91.75MB                      
+ Used 8                 , 91.75MB                      
+ Free 8                 , 0.00B                        
+ Percentage 8           ,100.00%
+ Partition9             , /dev/loop7                   
+ Mountpoint9            , /snap/gnome-3-38-2004/119    
+ File system type9      , squashfs                     
+ Total Size 9           , 346.38MB                     
+ Used 9                 , 346.38MB                     
+ Free 9                 , 0.00B                        
+ Percentage 9           ,100.00%
+ Partition10            , /dev/loop9                   
+ Mountpoint10           , /snap/gnome-3-38-2004/99     
+ File system type10     , squashfs                     
+ Total Size 10          , 248.88MB                     
+ Used 10                , 248.88MB                     
+ Free 10                , 0.00B                        
+ Percentage 10          ,100.00%
+ Partition11            , /dev/loop8                   
+ Mountpoint11           , /snap/gtk-common-themes/1519 
+ File system type11     , squashfs                     
+ Total Size 11          , 65.25MB                      
+ Used 11                , 65.25MB                      
+ Free 11                , 0.00B                        
+ Percentage 11          ,100.00%
+ Partition12            , /dev/loop10                  
+ Mountpoint12           , /snap/gnome-3-34-1804/33     
+ File system type12     , squashfs                     
+ Total Size 12          , 255.62MB                     
+ Used 12                , 255.62MB                     
+ Free 12                , 0.00B                        
+ Percentage 12          ,100.00%
+ Partition13            , /dev/loop11                  
+ Mountpoint13           , /snap/snap-store/638         
+ File system type13     , squashfs                     
+ Total Size 13          , 46.00MB                      
+ Used 13                , 46.00MB                      
+ Free 13                , 0.00B                        
+ Percentage 13          ,100.00%
+ Partition14            , /dev/loop12                  
+ Mountpoint14           , /snap/snap-store/558         
+ File system type14     , squashfs                     
+ Total Size 14          , 54.25MB                      
+ Used 14                , 54.25MB                      
+ Free 14                , 0.00B                        
+ Percentage 14          ,100.00%
+ Partition15            , /dev/loop13                  
+ Mountpoint15           , /snap/snapd/17883            
+ File system type15     , squashfs                     
+ Total Size 15          , 49.62MB                      
+ Used 15                , 49.62MB                      
+ Free 15                , 0.00B                        
+ Percentage 15          ,100.00%
+ Partition16            , /dev/sda1                    
+ Mountpoint16           , /boot/efi                    
+ File system type16     , vfat                         
+ Total Size 16          , 510.98MB                     
+ Used 16                , 4.00KB                       
+ Free 16                , 510.98MB                     
+ Percentage 16          ,0.00%
+ Total read since boot  , 669.40MB                     
+ Total write since boot , 86.00MB                      
+ SYSTEM PARAMETER , VALUES              
+ Boot Time        , 2022/12/22 14:40:49 
+ SYSTEM PARAMETER                  , VALUES            
+ lo IP Address                     , 127.0.0.1         
+ lo Netmask                        , None              
+ lo Broadcast IP                   , None              
+ lo MAC Address                    , 00:00:00:00:00:00 
+ lo Broadcast MAC                  , None              
+ enp0s3 IP Address                 , 192.168.1.232     
+ enp0s3 Netmask                    , None              
+ enp0s3 Broadcast IP               , 192.168.1.255     
+ enp0s3 MAC Address                , 08:00:27:b9:b4:43 
+ enp0s3 Broadcast MAC              , ff:ff:ff:ff:ff:ff 
+ Total bytes uploaded since boot   , 658.95KB          
+ Total bytes downloaded since boot , 7.98MB            
